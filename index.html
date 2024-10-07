@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KitChat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sign-up-form">
+            <h2>Sign Up</h2>
+            <input type="text" id="new-username" placeholder="Username">
+            <input type="password" id="new-password" placeholder="Password">
+            <button onclick="signUp()">Sign Up</button>
+        </div>
+        <div class="sign-in-form" style="display:none;">
+            <h2>Sign In</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="signIn()">Sign In</button>
+        </div>
+        <div class="chat-room-list" style="display:none;">
+            <h2>Chat Rooms</h2>
+            <div id="chat-room-list">
+                <!-- Chat rooms will be listed here -->
+            </div>
+            <button onclick="showCreateChatRoomForm()">Create Chat Room</button>
+        </div>
+        <div class="create-chat-room-form" style="display:none;">
+            <h2>Create Chat Room</h2>
+            <input type="text" id="chat-room-title" placeholder="Chat Room Title">
+            <textarea id="chat-room-description" placeholder="Chat Room Description"></textarea>
+            <button onclick="createChatRoom()">Create</button>
+            <button onclick="cancelCreateChatRoom()">Cancel</button>
+        </div>
+        <div class="chat-container" style="display:none;">
+            <div class="chat-header">
+                <h2 id="chat-room-title-header">Chat Room</h2>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+                <button class="return-btn" onclick="returnToChatRoomList()">Return</button>
+            </div>
+            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-input">
+                <input type="text" id="message" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+            <button class="delete-room-btn" style="display:none;" onclick="deleteChatRoom()">Delete Chat Room</button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
