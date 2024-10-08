@@ -7,11 +7,20 @@ let typingTimeout;
 function signUp() {
     const username = document.getElementById('new-username').value;
     const password = document.getElementById('new-password').value;
+    
     if (username && password) {
         users.push({ username, password });
         localStorage.setItem('users', JSON.stringify(users));
+
         loggedInUser = { username, password };
         localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+        // Ensure World Chat is always available for every new user
+        if (!chatRooms.some(room => room.title === 'World Chat')) {
+            chatRooms.push({ title: 'World Chat', description: 'A chat room for everyone', owner: 'admin' });
+            localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
+        }
+
         document.querySelector('.sign-up-form').style.display = 'none';
         document.querySelector('.chat-room-list').style.display = 'flex';
         updateChatRoomList();
@@ -23,10 +32,19 @@ function signUp() {
 function signIn() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
+
     const user = users.find(user => user.username === username && user.password === password);
+    
     if (user) {
         loggedInUser = user;
         localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+        // Ensure World Chat is available on sign-in
+        if (!chatRooms.some(room => room.title === 'World Chat')) {
+            chatRooms.push({ title: 'World Chat', description: 'A chat room for everyone', owner: 'admin' });
+            localStorage.setItem('chatRooms', JSON.stringify(chatRooms));
+        }
+
         document.querySelector('.sign-in-form').style.display = 'none';
         document.querySelector('.chat-room-list').style.display = 'flex';
         updateChatRoomList();
@@ -195,4 +213,5 @@ function showTypingIndicator() {
 document.getElementById('message').addEventListener('input', showTypingIndicator);
 
 window.onload = checkRememberedUser;
+
 
