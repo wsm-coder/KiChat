@@ -2,6 +2,7 @@ let users = JSON.parse(localStorage.getItem('users')) || [];
 let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')) || null;
 let chatRooms = JSON.parse(localStorage.getItem('chatRooms')) || [{ title: 'World Chat', description: 'A chat room for everyone', owner: 'admin' }];
 let currentChatRoom = null;
+let typingTimeout;
 
 function signUp() {
     const username = document.getElementById('new-username').value;
@@ -52,7 +53,7 @@ function sendMessage() {
             messageElement.innerHTML = `<span>${loggedInUser.username}: ${message}</span><span class="timestamp">${new Date().toLocaleTimeString()}</span>`;
             messageElement.oncontextmenu = (e) => {
                 e.preventDefault();
-                if (confirm('Do you want to delete this message?')) {
+                if (currentChatRoom.title !== 'World Chat' && confirm('Do you want to delete this message?')) {
                     chatBox.removeChild(messageElement);
                     deleteMessage(currentChatRoom.title, messageElement.innerHTML);
                 }
@@ -83,7 +84,7 @@ function loadMessages(roomTitle) {
         messageElement.innerHTML = msg;
         messageElement.oncontextmenu = (e) => {
             e.preventDefault();
-            if (confirm('Do you want to delete this message?')) {
+            if (roomTitle !== 'World Chat' && confirm('Do you want to delete this message?')) {
                 chatBox.removeChild(messageElement);
                 deleteMessage(roomTitle, messageElement.innerHTML);
             }
@@ -120,12 +121,14 @@ function updateChatRoomList() {
         roomElement.className = 'chat-room-card';
         roomElement.innerHTML = `<h3>${room.title}</h3><p>${room.description}</p>`;
         roomElement.onclick = () => joinChatRoom(room);
-        roomElement.oncontextmenu = (e) => {
-            e.preventDefault();
-            if (confirm(`Are you sure you want to delete the chat room "${room.title}"?`)) {
-                deleteChatRoom(room);
-            }
-        };
+        if (room.title !== 'World Chat') {
+            roomElement.oncontextmenu = (e) => {
+                e.preventDefault();
+                if (confirm(`Are you sure you want to delete the chat room "${room.title}"?`)) {
+                    deleteChatRoom(room);
+                }
+            };
+        }
         chatRoomList.appendChild(roomElement);
     });
 }
@@ -179,5 +182,16 @@ function checkRememberedUser() {
         document.querySelector('.sign-up-form').style.display = 'flex';
     }
 }
+
+function showTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    typingIndicator.style.display = 'block';
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        typingIndicator.style.display = 'none';
+    }, 1000);
+}
+
+document.getElementById('message').addEventListener('input', showTypingIndicator);
 
 window.onload = checkRememberedUser;
