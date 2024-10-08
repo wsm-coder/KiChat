@@ -195,3 +195,4 @@ function showTypingIndicator() {
 document.getElementById('message').addEventListener('input', showTypingIndicator);
 
 window.onload = checkRememberedUser;
+
