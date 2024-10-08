@@ -48,11 +48,19 @@ function sendMessage() {
         if (message) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.textContent = `${loggedInUser.username}: ${message}`;
+            messageElement.className = 'message-box';
+            messageElement.innerHTML = `<span>${loggedInUser.username}: ${message}</span><span class="timestamp">${new Date().toLocaleTimeString()}</span>`;
+            messageElement.oncontextmenu = (e) => {
+                e.preventDefault();
+                if (confirm('Do you want to delete this message?')) {
+                    chatBox.removeChild(messageElement);
+                    deleteMessage(currentChatRoom.title, messageElement.innerHTML);
+                }
+            };
             chatBox.appendChild(messageElement);
             document.getElementById('message').value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
-            saveMessage(currentChatRoom.title, messageElement.textContent);
+            saveMessage(currentChatRoom.title, messageElement.innerHTML);
         }
     } else {
         alert('You must be signed in and in a chat room to send messages');
@@ -71,10 +79,24 @@ function loadMessages(roomTitle) {
     chatBox.innerHTML = '';
     messages.forEach(msg => {
         const messageElement = document.createElement('div');
-        messageElement.textContent = msg;
+        messageElement.className = 'message-box';
+        messageElement.innerHTML = msg;
+        messageElement.oncontextmenu = (e) => {
+            e.preventDefault();
+            if (confirm('Do you want to delete this message?')) {
+                chatBox.removeChild(messageElement);
+                deleteMessage(roomTitle, messageElement.innerHTML);
+            }
+        };
         chatBox.appendChild(messageElement);
     });
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function deleteMessage(roomTitle, message) {
+    let messages = JSON.parse(localStorage.getItem(roomTitle)) || [];
+    messages = messages.filter(msg => msg !== message);
+    localStorage.setItem(roomTitle, JSON.stringify(messages));
 }
 
 function joinChatRoom(room) {
@@ -137,11 +159,24 @@ function createChatRoom() {
     }
 }
 
+function showSignInForm() {
+    document.querySelector('.sign-up-form').style.display = 'none';
+    document.querySelector('.sign-in-form').style.display = 'flex';
+}
+
+function showSignUpForm() {
+    document.querySelector('.sign-in-form').style.display = 'none';
+    document.querySelector('.sign-up-form').style.display = 'flex';
+}
+
 function checkRememberedUser() {
     if (loggedInUser) {
         document.querySelector('.sign-in-form').style.display = 'none';
+        document.querySelector('.sign-up-form').style.display = 'none';
         document.querySelector('.chat-room-list').style.display = 'flex';
         updateChatRoomList();
+    } else {
+        document.querySelector('.sign-up-form').style.display = 'flex';
     }
 }
 
