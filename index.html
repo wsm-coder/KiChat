@@ -13,12 +13,14 @@
             <input type="text" id="new-username" placeholder="Username">
             <input type="password" id="new-password" placeholder="Password">
             <button onclick="signUp()">Sign Up</button>
+            <p>Already have an account? <button onclick="showSignInForm()">Sign In</button></p>
         </div>
         <div class="sign-in-form" style="display:none;">
             <h2>Sign In</h2>
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">
             <button onclick="signIn()">Sign In</button>
+            <p>Don't have an account? <button onclick="showSignUpForm()">Sign Up!</button></p>
         </div>
         <div class="chat-room-list" style="display:none;">
             <h2>Chat Rooms</h2>
