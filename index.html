@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KitChat</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase Configuration Script -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDp59Ac1WTWdzp2_sViZhwtHF9ZrhAsDVA",
+        authDomain: "kitchat-dad04.firebaseapp.com",
+        projectId: "kitchat-dad04",
+        storageBucket: "kitchat-dad04.appspot.com",
+        messagingSenderId: "17060479844",
+        appId: "1:17060479844:web:0db7117c46446a24e6b071"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     <div class="container">
